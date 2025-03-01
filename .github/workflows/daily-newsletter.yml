@@ -28,8 +28,9 @@ jobs:
       run: |
         # 로그 디렉토리 생성
         mkdir -p logs
-        # 설정 파일 생성
-        echo "${{ secrets.GMAIL_CREDENTIALS }}" > credentials.json
+        # 서비스 계정 키 JSON 파일 생성
+        echo '${{ secrets.GMAIL_CREDENTIALS }}' > credentials.json
+        # 환경 변수 파일 생성
         echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > .env
         echo "SLACK_WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL }}" >> .env
 
