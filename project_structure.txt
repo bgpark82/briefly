@@ -1,0 +1,15 @@
+newsletter_bot/
+├── config/
+│   ├── __init__.py
+│   └── settings.py
+├── services/
+│   ├── __init__.py
+│   ├── gmail_service.py
+│   ├── summary_service.py
+│   └── slack_service.py
+├── utils/
+│   ├── __init__.py
+│   └── logger.py
+├── main.py
+├── requirements.txt
+└── README.md 

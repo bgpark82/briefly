@@ -1,0 +1,41 @@
+name: Daily Newsletter Digest
+
+on:
+  schedule:
+    # 베를린 시간 09:00 (UTC+1 또는 UTC+2)
+    # UTC 기준 08:00 (겨울) 또는 07:00 (여름)
+    - cron: '0 7 * * *'
+  workflow_dispatch:  # 수동 실행 옵션 추가
+
+jobs:
+  send-newsletter:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Create config files
+      run: |
+        echo "${{ secrets.GMAIL_CREDENTIALS }}" > credentials.json
+        echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > .env
+        echo "SLACK_WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL }}" >> .env
+
+    - name: Run newsletter script
+      run: python main.py
+
+    - name: Clean up sensitive files
+      if: always()
+      run: |
+        rm -f credentials.json
+        rm -f .env
+        rm -f token.json 
