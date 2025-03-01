@@ -24,8 +24,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Create config files
+    - name: Create config files and directories
       run: |
+        # 로그 디렉토리 생성
+        mkdir -p logs
+        # 설정 파일 생성
         echo "${{ secrets.GMAIL_CREDENTIALS }}" > credentials.json
         echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > .env
         echo "SLACK_WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL }}" >> .env

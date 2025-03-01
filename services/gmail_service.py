@@ -12,8 +12,9 @@ from config.settings import GMAIL_SCOPES, GMAIL_TOKEN_FILE, GMAIL_CREDENTIALS_FI
 
 class GmailService:
     def __init__(self):
-        self.service = self._get_gmail_service()
+        # 로거를 서비스 초기화 전에 설정
         self.logger = logging.getLogger(__name__)
+        self.service = self._get_gmail_service()
 
     def _get_gmail_service(self):
         """
@@ -28,12 +29,14 @@ class GmailService:
 
             if is_github_actions:
                 # GitHub Actions에서는 서비스 계정 사용
+                self.logger.info("Using service account authentication for GitHub Actions")
                 creds = service_account.Credentials.from_service_account_file(
                     GMAIL_CREDENTIALS_FILE,
                     scopes=GMAIL_SCOPES
                 )
             else:
                 # 로컬 환경에서는 OAuth 사용
+                self.logger.info("Using OAuth authentication for local environment")
                 if os.path.exists(GMAIL_TOKEN_FILE):
                     creds = Credentials.from_authorized_user_file(GMAIL_TOKEN_FILE, GMAIL_SCOPES)
                 
